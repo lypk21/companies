@@ -26,6 +26,14 @@
                         Employee
                     </a>
                 </li>
+
+                <li class="m-2">
+                    <form action="{{url('logout')}}"  method="post">
+                        @csrf
+                        <button class="btn ">Logout</button>
+                    </form>
+
+                </li>
             </ul>
         </div>
         <div class="col-sm-10">

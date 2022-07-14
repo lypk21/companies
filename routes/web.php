@@ -14,10 +14,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('index');
+})->name('index');
 
-Route::group(['prefix' => '/admin'], function ($router) {
+
+Route::post('/login','UserController@login');
+Route::post('/logout','UserController@logout');
+
+
+Route::group(['prefix' => '/admin', 'middleware' => 'admin'], function ($router) {
     Route::resource('/company','CompanyController',['except' => ['edit','update','destroy']]);
     Route::put('/company/{company}','companyController@update');
     Route::delete('/company/{company}','CompanyController@destroy');

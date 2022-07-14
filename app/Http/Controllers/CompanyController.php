@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CompanyRequest;
 use App\Http\Services\CompanyService;
 use App\Models\Company;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
 class CompanyController extends Controller
@@ -47,12 +46,16 @@ class CompanyController extends Controller
     public function store(CompanyRequest $request)
     {
         try {
-            $this->companyService->createCompany($request);
+            $company = $this->companyService->createCompany($request);
+            $this->companyService->sendNotificationEmail($company);
+
             return back()->with('success','create company successfully');
         } catch (\Exception $exception) {
             return back()->withErrors($exception->getMessage());
         }
     }
+
+
 
 
     /**
