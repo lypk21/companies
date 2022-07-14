@@ -3,38 +3,39 @@
 @section('content')
       <div class="row">
           <div class="col-sm-6">
-              <h3>Company List</h3>
+              <h3>Employee List</h3>
           </div>
           <div class="col-sm-6">
-              <a href="{{url('admin/company/create')}}" class="btn btn-primary">
-                  Create Company
+              <a href="{{url('admin/employee/create')}}" class="btn btn-primary">
+                  Create Employee
               </a>
           </div>
+
           @include('layouts.message')
 
-          <div class="col-sm-12">
+          <div class="col-12">
               <table class="table table-hover">
                   <thead>
                   <tr>
                       <td>id</td>
-                      <td>Name</td>
+                      <td>Company</td>
+                      <td>Full Name</td>
                       <td>Email</td>
-                      <td>Logo</td>
-                      <td >Website</td>
+                      <td>Phone</td>
                       <td>Actions</td>
                   </tr>
                   </thead>
                   <tboday>
-                      @foreach($companies as $company)
+                      @foreach($employees as $employee)
                       <tr>
-                          <td>{{$company->id}}</td>
-                          <td>{{$company->name}}</td>
-                          <td>{{$company->email}}</td>
-                          <td>{!! renderImage($company->logo) !!}</td>
-                          <td><a href="{{$company->website}}" target="_blank">{{$company->website}} </a> </td>
+                          <td>{{$employee->id}}</td>
+                          <td>{{$employee->company->name}}</td>
+                          <td>{{$employee->fullName}}</td>
+                          <td>{{$employee->email}}</td>
+                          <td><a href="tel: {{$employee->phone}}">{{$employee->phone}} </a> </td>
                           <td style="display: flex;">
-                              <a href="{{url('admin/company/'.$company->id.'/edit')}}" class="btn btn-primary" style="margin-right: 10px">Edit</a>
-                              <form action="{{url('admin/company/'.$company->id)}}"  method="post">
+                              <a href="{{url('admin/employee/'.$employee->id.'/edit')}}" class="btn btn-primary" style="margin-right: 10px">Edit</a>
+                              <form action="{{url('admin/employee/'.$employee->id)}}"  method="post">
                                   @csrf
                                   <input name="_method" type="hidden" value="DELETE">
                                   <button class="btn btn-danger">Delete</button>
@@ -45,8 +46,7 @@
                   </tboday>
               </table>
                 <div class="text-center">
-                    {{ $companies ? $companies->links() : ""}}
-
+                    {{ $employees ? $employees->links() : ""}}
                 </div>
           </div>
       </div>

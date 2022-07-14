@@ -2,10 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EmployeeRequest;
+use App\Http\Services\CompanyService;
+use App\Http\Services\EmployeeService;
+use App\Models\Employee;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class EmployeeController extends Controller
 {
+    private  $employeeService;
+    public function __construct(EmployeeService $employeeService)
+    {
+        $this->employeeService = $employeeService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +24,8 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        //
+        $employees = $this->employeeService->listEmployees();
+        return view('admin.employee.index', compact('employees'));
     }
 
     /**
@@ -21,9 +33,10 @@ class EmployeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(CompanyService $companyService)
     {
-        //
+        $companies = $companyService->listAllCompanies();
+        return view('admin.employee.create', compact('companies'));
     }
 
     /**
@@ -32,21 +45,17 @@ class EmployeeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(EmployeeRequest $request)
     {
-        //
+        try {
+            $this->employeeService->createEmployee($request);
+            return back()->with('success','create Employee successfully');
+        } catch (\Exception $exception) {
+            return back()->withErrors($exception->getMessage());
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -54,9 +63,10 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Employee $employee, CompanyService $companyService)
     {
-        //
+        $companies = $companyService->listCompanies();
+        return view('admin.employee.edit', compact('employee', 'companies'));
     }
 
     /**
@@ -66,9 +76,14 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(EmployeeRequest $request, Employee $employee)
     {
-        //
+        try {
+            $this->employeeService->updateEmployee($request, $employee);
+            return response()->redirectTo('admin/employee')->with('success','update employee successfully');
+        } catch (\Exception $exception) {
+            return back()->withErrors($exception->getMessage());
+        }
     }
 
     /**
@@ -77,8 +92,13 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Employee $employee)
     {
-        //
+        try {
+            $this->employeeService->deleteEmployee($employee);
+            return back()->with('success','delete successfully.');
+        } catch (\Exception $e) {
+            return back()->withErrors($e->getMessage());
+        }
     }
 }

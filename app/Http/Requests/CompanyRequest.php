@@ -24,7 +24,7 @@ class CompanyRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:companies,name,'.$this->id,
             'email' => 'nullable|sometimes|email',
             'logo' => 'nullable|sometimes|image|mimes:jpeg,png,jpg,gif,svg',
             'website' => 'nullable|sometimes|url',

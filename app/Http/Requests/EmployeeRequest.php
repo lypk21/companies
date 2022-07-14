@@ -33,4 +33,13 @@ class EmployeeRequest extends FormRequest
     }
 
 
+    public function messages()
+    {
+        return [
+            'company_id.required' => 'company is required',
+            'phone.numeric' => 'invalid phone format',
+            'phone.regex' => 'invalid phone format',
+        ];
+    }
+
 }

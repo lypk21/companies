@@ -8,6 +8,7 @@
             <form action="{{url('admin/company/'.$company->id)}}"  method="post" enctype="multipart/form-data">
                 @csrf
                 <input name="_method" type="hidden" value="PUT">
+                <input  type="hidden" name="id" value="{{$company->id}}">
 
                 <div class="form-group">
                     <label>Company Name *</label>

@@ -15,8 +15,12 @@ class Employee extends Model
         return $this->belongsTo(Company::class, 'company_id');
     }
 
-    public function getFullName() {
+    public function getFullNameAttribute() {
         return $this->first_name." ".$this->last_name;
+    }
+
+    public function scopePriority($query) {
+        return $query->orderBy('company_id')->orderBy('id', 'desc');
     }
 
 }

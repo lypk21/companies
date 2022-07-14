@@ -19,10 +19,10 @@
         <div class="col-sm-2">
             <ul>
                 <li>
-                    <a href="{{url('admin/company')}}">Company</a>
+                    <a  class="btn " href="{{url('admin/company')}}">Company</a>
                 </li>
-                <li>
-                    <a href="{{url('admin/employee')}}">
+                <li class="m-2">
+                    <a class="btn " href="{{url('admin/employee')}}">
                         Employee
                     </a>
                 </li>

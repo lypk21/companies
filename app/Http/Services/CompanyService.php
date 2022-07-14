@@ -13,7 +13,7 @@ class CompanyService
 {
     public function listCompanies() {
         try {
-            return Company::latest()->paginate();
+            return Company::priority()->paginate(10);
         } catch (QueryException $e) {
             throw $e;
         }
@@ -22,12 +22,7 @@ class CompanyService
     public function createCompany($request) {
         try {
             $companyDate = $request->except('logo');
-            if($request->has('logo') && $file = $request->file('logo')) {
-                if($file->isValid()) {
-                    $img_path = $file->store('logo');
-                    $companyDate['logo'] = $img_path;
-                }
-            }
+            $companyDate['logo'] = $this->handleUploadedImage($request->file('logo'));
             $company = Company::create($companyDate);
             return $company;
         } catch (QueryException $e) {
@@ -38,12 +33,10 @@ class CompanyService
     public function updateCompany($request, $company) {
         try {
             $company->update($request->except('logo'));
-            if($request->has('logo') && $file = $request->file('logo')) {
-                if($file->isValid()) {
-                    $img_path = $file->store('logo');
-                    $company->logo = $img_path;
-                    $company->save();
-                }
+            $img_path = $this->handleUploadedImage($request->file('logo'));
+            if($img_path) {
+                $company->logo = $img_path;
+                $company->save();
             }
             return $company;
         } catch (QueryException $e) {
@@ -51,7 +44,26 @@ class CompanyService
         }
     }
 
-    public function deleteCompany() {
+    private function handleUploadedImage($file) {
+        if(!is_null($file) && $file->isValid()) {
+            return $file->store('logo');
+        }
+        return null;
+    }
 
+    public function deleteCompany($company) {
+        try {
+            $company->delete();
+        } catch (\Exception $e) {
+            throw  $e;
+        }
+    }
+
+    public function listAllCompanies() {
+        try {
+            return Company::priority()->get();
+        } catch (QueryException $e) {
+            throw $e;
+        }
     }
 }

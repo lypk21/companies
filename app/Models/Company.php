@@ -14,4 +14,8 @@ class Company extends Model
     public function employees() {
         return $this->hasMany(Employee::class, 'company_id');
     }
+
+    public function scopePriority($query) {
+        return $query->orderBy('name', 'ASC')->orderBy('id', 'DESC');
+    }
 }
