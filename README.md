@@ -36,9 +36,9 @@ how to run the project?
 
 • composer dump-autoload
 
-About the short project:
+About the small project:
 
 1. build with laravel 8, the structure mainly import the services layer to handle business logic for decoupling the controller.
 2. create middle middle ware for user and only administrator and owner can access the backend.
 3. apply the laravel best practice principle 
-4. have some http unit test cases, but not fully cover due to limited space time.
+4. have some http unit test cases, but not fully cover due to limited spare time.
