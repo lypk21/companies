@@ -36,6 +36,8 @@ how to run the project?
 
 • composer dump-autoload
 
+• php artisan test  to run test cases
+
 About the small project:
 
 1. build with laravel 8, the structure mainly import the services layer to handle business logic for decoupling the controller.
